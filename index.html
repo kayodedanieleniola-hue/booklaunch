@@ -13,10 +13,10 @@
     --ink:#170b0b;
     --wine:#6f0508;
     --red:#df0000;
-    --paper:#fff9f2;
-    --soft:#f3e7dd;
-    --muted:#6d5d55;
-    --line:#e0cbc0;
+    --paper:#fffaf3;
+    --soft:#f6ead9;
+    --muted:#6a5b4f;
+    --line:#ead6c4;
     --white:#ffffff;
     --shadow:0 24px 70px rgba(69, 7, 7, .18);
   }
@@ -27,15 +27,15 @@
     color:var(--ink);
     font-family:"Manrope",Arial,sans-serif;
     background:
-      linear-gradient(115deg, rgba(255,255,255,.9), rgba(255,248,239,.92)),
-      url("booklaunch.jpeg") center/cover fixed;
+      linear-gradient(90deg, rgba(255,250,243,.98) 0%, rgba(255,250,243,.9) 42%, rgba(255,250,243,.55) 70%, rgba(255,250,243,.76) 100%),
+      url("book-background.jpeg") center right/cover fixed;
     -webkit-font-smoothing:antialiased;
   }
   body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:rgba(255,252,248,.82);
+    background:linear-gradient(180deg, rgba(111,5,8,.1), rgba(23,11,11,.14));
     pointer-events:none;
   }
   button,input{font:inherit}
@@ -48,14 +48,14 @@
     padding:34px 18px;
   }
   .shell{
-    width:min(1060px,100%);
+    width:min(1120px,100%);
     display:grid;
     grid-template-columns:minmax(0,1fr) 390px;
     gap:28px;
     align-items:center;
   }
   .intro,.panel{
-    background:rgba(255,255,255,.86);
+    background:rgba(255,255,255,.9);
     border:1px solid rgba(111,5,8,.14);
     box-shadow:var(--shadow);
     backdrop-filter:blur(10px);
@@ -87,6 +87,19 @@
   }
   .copy p{margin:0 0 16px}
   .signature{font-weight:800;color:var(--wine)}
+  .author-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--wine);
+    background:transparent;
+    color:var(--wine);
+    cursor:pointer;
+    font-weight:800;
+    padding:12px 18px;
+    margin:2px 0 12px;
+  }
+  .author-btn:hover{background:var(--wine);color:var(--white)}
   .details{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -170,6 +183,39 @@
     color:var(--red);
   }
   .hidden{display:none!important}
+  .author-section{
+    align-items:start;
+    background:
+      linear-gradient(110deg, rgba(255,250,243,.98), rgba(255,250,243,.88)),
+      url("book-background.jpeg") center/cover fixed;
+  }
+  .author-wrap{
+    width:min(1040px,100%);
+    display:grid;
+    grid-template-columns:340px minmax(0,1fr);
+    gap:30px;
+    align-items:start;
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(111,5,8,.14);
+    box-shadow:var(--shadow);
+    padding:30px;
+  }
+  .author-photo{
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    object-position:center top;
+  }
+  .author-content h1{
+    font-size:clamp(38px,6vw,66px);
+    margin-bottom:14px;
+  }
+  .author-copy{
+    color:#34211f;
+    font-size:16px;
+    line-height:1.75;
+  }
+  .author-copy p{margin:0 0 16px}
   .thank-you{
     width:min(760px,100%);
     text-align:center;
@@ -206,12 +252,14 @@
   }
   @media (max-width:860px){
     .shell{grid-template-columns:1fr}
+    .author-wrap{grid-template-columns:1fr}
     .intro{padding:30px 24px}
     .details{grid-template-columns:1fr}
   }
   @media (max-width:520px){
     .screen{padding:18px 12px}
     .intro,.panel,.thank-card{padding:22px}
+    .author-wrap{padding:20px}
     .actions{grid-template-columns:1fr}
   }
 </style>
@@ -229,10 +277,11 @@
         <p>Kindly confirm your attendance by registering here. All event details, including venue and attendance options, are available on this registration page.</p>
         <p>I look forward to celebrating with you!</p>
         <p class="signature">Warm regards,<br>Pastor Olumide Akintunde</p>
+        <button class="author-btn" id="authorBtn" type="button">Read about the author</button>
       </div>
       <div class="details" aria-label="Event details">
         <div class="detail"><span>Date</span><strong>Wednesday, 26th August 2026</strong></div>
-        <div class="detail"><span>Time</span><strong>8pm GMT</strong></div>
+        <div class="detail"><span>Time</span><strong>12:00 PM noon West Africa Time</strong></div>
         <div class="detail"><span>Venue</span><strong>The Breve Molete, Ibadan</strong></div>
       </div>
     </section>
@@ -260,6 +309,23 @@
   </div>
 </main>
 
+<main id="authorScreen" class="screen author-section hidden">
+  <section class="author-wrap" aria-labelledby="authorTitle">
+    <img class="author-photo" src="author-portrait.jpeg" alt="Pastor Olumide Akintunde">
+    <div class="author-content">
+      <div class="eyebrow">About the Author</div>
+      <h1 id="authorTitle">Akintunde Olumide</h1>
+      <div class="author-copy">
+        <p>Akintunde Olumide is a preacher, teacher, author, song writer and producer. His Christian journey began during his undergraduate days at the Federal University of Technology, Akure, where he served as the Public Relations Officer of the Joint Campus Christian Fellowship in 2003.</p>
+        <p>In 2005, he was privileged to serve as the Central Prayer Secretary of the Nigeria Christian Corpers' Fellowship, Enugu State. Over the years, he has held several leadership roles in notable Christian organizations before pioneering Victorious Vine International in Akure, Ondo State.</p>
+        <p>In 2018, he also served as Media Director with the Pentecostal Fellowship of Nigeria (PFN), Ondo State. Today, he reaches a wider audience through his weekly broadcast, FAITHBOOST, on various social media platforms.</p>
+        <p>Beyond ministry, Olumide is involved in the creative technology industry. He holds a Bachelor's degree in Engineering from the Federal University of Technology, Akure (FUTA), and a Postgraduate degree in Electronics and Computer Engineering from Lagos State University (LASU). Also, he attended Word of Faith Bible Institute. He is happily married and blessed with children.</p>
+      </div>
+      <button class="link-btn" id="backToInviteBtn" type="button">Back to invitation</button>
+    </div>
+  </section>
+</main>
+
 <main id="thankYouScreen" class="screen hidden">
   <section class="thank-you">
     <div class="thank-card">
@@ -283,13 +349,14 @@ const EMAILJS_TEMPLATE_ID = "template_c05p1hi";
 const EVENT = {
   name: "Book Launch - Pressing in the Pursuit",
   date: "Wednesday, 26th August 2026",
-  time: "8pm GMT",
+  time: "12:00 PM noon West Africa Time",
   venue: "The Breve Molete, Ibadan"
 };
 
 emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
 const registrationScreen = document.getElementById("registrationScreen");
+const authorScreen = document.getElementById("authorScreen");
 const thankYouScreen = document.getElementById("thankYouScreen");
 const form = document.getElementById("rsvpForm");
 const submitBtn = document.getElementById("submitBtn");
@@ -304,9 +371,23 @@ function showMessage(text){
 function showThankYou(fullName){
   guestFirstName.textContent = fullName.split(" ")[0] || "friend";
   registrationScreen.classList.add("hidden");
+  authorScreen.classList.add("hidden");
   thankYouScreen.classList.remove("hidden");
   window.scrollTo(0, 0);
 }
+
+document.getElementById("authorBtn").addEventListener("click", () => {
+  registrationScreen.classList.add("hidden");
+  thankYouScreen.classList.add("hidden");
+  authorScreen.classList.remove("hidden");
+  window.scrollTo(0, 0);
+});
+
+document.getElementById("backToInviteBtn").addEventListener("click", () => {
+  authorScreen.classList.add("hidden");
+  registrationScreen.classList.remove("hidden");
+  window.scrollTo(0, 0);
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -354,6 +435,7 @@ form.addEventListener("submit", async (event) => {
 
 document.getElementById("backBtn").addEventListener("click", () => {
   form.reset();
+  authorScreen.classList.add("hidden");
   thankYouScreen.classList.add("hidden");
   registrationScreen.classList.remove("hidden");
   window.scrollTo(0, 0);
