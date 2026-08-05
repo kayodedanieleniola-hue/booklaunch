@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Launch RSVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root{
+    --ink:#170b0b;
+    --wine:#6f0508;
+    --red:#df0000;
+    --paper:#fff9f2;
+    --soft:#f3e7dd;
+    --muted:#6d5d55;
+    --line:#e0cbc0;
+    --white:#ffffff;
+    --shadow:0 24px 70px rgba(69, 7, 7, .18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100vh;
+    color:var(--ink);
+    font-family:"Manrope",Arial,sans-serif;
+    background:
+      linear-gradient(115deg, rgba(255,255,255,.9), rgba(255,248,239,.92)),
+      url("booklaunch.jpeg") center/cover fixed;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(255,252,248,.82);
+    pointer-events:none;
+  }
+  button,input{font:inherit}
+  .screen{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    padding:34px 18px;
+  }
+  .shell{
+    width:min(1060px,100%);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 390px;
+    gap:28px;
+    align-items:center;
+  }
+  .intro,.panel{
+    background:rgba(255,255,255,.86);
+    border:1px solid rgba(111,5,8,.14);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(10px);
+  }
+  .intro{
+    padding:44px;
+    border-left:8px solid var(--red);
+  }
+  .eyebrow{
+    color:var(--red);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  h1{
+    margin:0 0 18px;
+    font-family:"Cormorant Garamond",serif;
+    font-size:clamp(42px,7vw,82px);
+    line-height:.92;
+    color:var(--wine);
+  }
+  .copy{
+    max-width:650px;
+    font-size:17px;
+    line-height:1.72;
+    color:#34211f;
+  }
+  .copy p{margin:0 0 16px}
+  .signature{font-weight:800;color:var(--wine)}
+  .details{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-top:26px;
+  }
+  .detail{
+    border:1px solid var(--line);
+    background:#fffaf6;
+    padding:14px;
+  }
+  .detail span{
+    display:block;
+    color:var(--red);
+    font-size:11px;
+    font-weight:800;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .detail strong{font-size:14px}
+  .panel{
+    padding:28px;
+  }
+  .panel h2{
+    margin:0 0 8px;
+    font-size:25px;
+    color:var(--wine);
+  }
+  .panel-note{
+    margin:0 0 24px;
+    color:var(--muted);
+    line-height:1.55;
+    font-size:14px;
+  }
+  .field{margin-bottom:16px}
+  label{
+    display:block;
+    color:var(--wine);
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    margin-bottom:7px;
+  }
+  input{
+    width:100%;
+    border:1px solid var(--line);
+    background:var(--white);
+    color:var(--ink);
+    padding:14px 13px;
+    outline:none;
+  }
+  input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(223,0,0,.12)}
+  .submit-btn,.secondary-btn{
+    width:100%;
+    border:0;
+    cursor:pointer;
+    font-weight:800;
+    padding:15px 18px;
+  }
+  .submit-btn{
+    background:var(--red);
+    color:var(--white);
+  }
+  .submit-btn:hover{background:#b90000}
+  .submit-btn:disabled{opacity:.65;cursor:not-allowed}
+  .secondary-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    background:var(--wine);
+    color:var(--white);
+  }
+  .message{
+    display:none;
+    margin-top:14px;
+    font-size:13px;
+    line-height:1.5;
+    color:var(--red);
+  }
+  .hidden{display:none!important}
+  .thank-you{
+    width:min(760px,100%);
+    text-align:center;
+  }
+  .thank-card{
+    background:rgba(255,255,255,.9);
+    border:1px solid rgba(111,5,8,.14);
+    box-shadow:var(--shadow);
+    padding:28px;
+  }
+  .thank-card h1{
+    font-size:clamp(38px,6vw,62px);
+    margin-bottom:10px;
+  }
+  .flyer{
+    display:block;
+    width:min(420px,100%);
+    margin:24px auto;
+    box-shadow:0 20px 60px rgba(49,7,7,.28);
+  }
+  .actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
+  }
+  .link-btn{
+    border:1px solid var(--wine);
+    background:transparent;
+    color:var(--wine);
+    cursor:pointer;
+    font-weight:800;
+    padding:14px 16px;
+  }
+  @media (max-width:860px){
+    .shell{grid-template-columns:1fr}
+    .intro{padding:30px 24px}
+    .details{grid-template-columns:1fr}
+  }
+  @media (max-width:520px){
+    .screen{padding:18px 12px}
+    .intro,.panel,.thank-card{padding:22px}
+    .actions{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<main id="registrationScreen" class="screen">
+  <div class="shell">
+    <section class="intro" aria-labelledby="pageTitle">
+      <div class="eyebrow">Special Invitation</div>
+      <h1 id="pageTitle">Book Launch</h1>
+      <div class="copy">
+        <p>Dear Friend,</p>
+        <p>I am delighted to invite you to the official launch of my new book on Wednesday, 26th August 2026.</p>
+        <p>This is more than a book launch. It's a celebration of purpose, faith, learning, and transformed lives. Your presence would mean so much to me, and I would be honored to have you share this memorable occasion.</p>
+        <p>Kindly confirm your attendance by registering here. All event details, including venue and attendance options, are available on this registration page.</p>
+        <p>I look forward to celebrating with you!</p>
+        <p class="signature">Warm regards,<br>Pastor Olumide Akintunde</p>
+      </div>
+      <div class="details" aria-label="Event details">
+        <div class="detail"><span>Date</span><strong>Wednesday, 26th August 2026</strong></div>
+        <div class="detail"><span>Time</span><strong>8pm GMT</strong></div>
+        <div class="detail"><span>Venue</span><strong>The Breve Molete, Ibadan</strong></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="formTitle">
+      <h2 id="formTitle">Confirm attendance</h2>
+      <p class="panel-note">Please register with your details. Your confirmation will be sent directly to the host.</p>
+      <form id="rsvpForm">
+        <div class="field">
+          <label for="fullName">Full name</label>
+          <input id="fullName" name="fullName" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" required>
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <button class="submit-btn" id="submitBtn" type="submit">Register now</button>
+        <div class="message" id="formMessage"></div>
+      </form>
+    </section>
+  </div>
+</main>
+
+<main id="thankYouScreen" class="screen hidden">
+  <section class="thank-you">
+    <div class="thank-card">
+      <div class="eyebrow">Registration Confirmed</div>
+      <h1>Thank you, <span id="guestFirstName">friend</span></h1>
+      <p class="panel-note">Your RSVP has been received. Save the invite flyer as a reminder, and I look forward to celebrating with you.</p>
+      <img class="flyer" src="booklaunch.jpeg" alt="Book Launch special invite flyer">
+      <div class="actions">
+        <a class="secondary-btn" href="booklaunch.jpeg" download="book-launch-invite.jpeg">Download flyer</a>
+        <button class="link-btn" id="backBtn" type="button">Register another guest</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const EMAILJS_PUBLIC_KEY = "R1wrAl1OTDcM4rKmW";
+const EMAILJS_SERVICE_ID = "service_o836buq";
+const EMAILJS_TEMPLATE_ID = "template_c05p1hi";
+
+const EVENT = {
+  name: "Book Launch - Pressing in the Pursuit",
+  date: "Wednesday, 26th August 2026",
+  time: "8pm GMT",
+  venue: "The Breve Molete, Ibadan"
+};
+
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+const registrationScreen = document.getElementById("registrationScreen");
+const thankYouScreen = document.getElementById("thankYouScreen");
+const form = document.getElementById("rsvpForm");
+const submitBtn = document.getElementById("submitBtn");
+const formMessage = document.getElementById("formMessage");
+const guestFirstName = document.getElementById("guestFirstName");
+
+function showMessage(text){
+  formMessage.textContent = text;
+  formMessage.style.display = "block";
+}
+
+function showThankYou(fullName){
+  guestFirstName.textContent = fullName.split(" ")[0] || "friend";
+  registrationScreen.classList.add("hidden");
+  thankYouScreen.classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  formMessage.style.display = "none";
+
+  const fullName = document.getElementById("fullName").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const email = document.getElementById("email").value.trim();
+
+  if(!fullName || !phone || !email){
+    showMessage("Please fill in all fields before submitting.");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Registering...";
+
+  const submittedAt = new Date().toLocaleString();
+  const templateParams = {
+    full_name: fullName,
+    name: fullName,
+    phone,
+    email,
+    reply_to: email,
+    attendance: "Yes",
+    submitted_at: submittedAt,
+    event_name: EVENT.name,
+    event_date: EVENT.date,
+    event_time: EVENT.time,
+    event_venue: EVENT.venue,
+    message: `${fullName} confirmed attendance for ${EVENT.name}. Phone: ${phone}. Email: ${email}.`
+  };
+
+  try{
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+    showThankYou(fullName);
+  }catch(error){
+    console.error("EmailJS send failed", error);
+    showMessage("Sorry, your registration could not be sent. Please try again.");
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Register now";
+  }
+});
+
+document.getElementById("backBtn").addEventListener("click", () => {
+  form.reset();
+  thankYouScreen.classList.add("hidden");
+  registrationScreen.classList.remove("hidden");
+  window.scrollTo(0, 0);
+});
+</script>
+</body>
+</html>
